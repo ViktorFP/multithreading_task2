@@ -10,7 +10,6 @@ public class MergeSort {
 	}
 
 	public static void sort(int[] array) {
-
 		sort(array, 0, array.length - 1);
 	}
 
@@ -19,11 +18,14 @@ public class MergeSort {
 		case 1:
 			break;
 		case 2:
-			if (array[0] > array[1]) {
-				int temp = array[0];
-				array[0] = array[1];
-				array[1] = temp;
+			// synchronized (array) {
+			if (array[firstIdx] > array[lastIndex]) {
+				int temp = array[firstIdx];
+				array[firstIdx] = array[lastIndex];
+				array[lastIndex] = temp;
+				// }
 			}
+
 			// swap(array, firstIdx, lastIndex);
 			break;
 		default:
@@ -36,27 +38,30 @@ public class MergeSort {
 
 	private static void merge(int[] array, int leftFirstIdx, int leftLastIndex,
 			int rightFirstIdx, int rightLastIndex) {
+		// int length = rightLastIndex - leftFirstIdx + 1;
+		// int[] temp = new int[length];
+		// System.arraycopy(array, leftFirstIdx, temp, 0, length);
+
 		int[] temp = Arrays.copyOfRange(array, leftFirstIdx, leftLastIndex);
+		int rCount = 0;
+		int cell = 0;
 		for (int l = 0; l < temp.length; l++) {
-			// int temp=array[l];
-			int left = temp[l];
-			for (int r = rightFirstIdx; r < rightLastIndex + 1; r++) {
+			int left = temp[l];			
+			cell = leftFirstIdx + l;
+			for (int r = rightFirstIdx + rCount; r < rightLastIndex + 1; r++) {
 				int right = array[r];
 				if (left > right) {
-					array[leftFirstIdx + l] = right;
+					array[cell] = right;
+					rCount++;
 				} else {
-					array[leftFirstIdx + l] = left;
+					array[cell] = left;
 					break;
 				}
 			}
+			cell = leftFirstIdx + rCount;
+			array[cell] = left;
+			rCount++;
 		}
-		// for (int l = leftFirstIdx; l < leftLastIndex + 1; l++) {
-		// for (int r = rightFirstIdx; r < rightLastIndex + 1; r++) {
-		// if (swap(array, l, r)) {
-		// break;
-		// }
-		// }
-		// }
 	}
 
 	// private static boolean swap(int[] array, int lIdx, int rIdx) {
@@ -71,7 +76,7 @@ public class MergeSort {
 
 	// ==============nested class================
 	static class Branch implements Runnable {
-		private static final int MAX_THREADS = 4;
+		private static final int MAX_THREADS = 1;// ///////////////
 		private static int threadStarted = 0;
 
 		private Thread thread;
@@ -96,7 +101,7 @@ public class MergeSort {
 					System.out
 							.println("Exception of branch: " + e.getMessage());
 				}
-				System.out.println("финишировал поток " + nT);// ---
+				// System.out.println("финишировал поток " + nT);// ---
 			} else {
 				sort(array, firstIdx, lastIndex);
 			}
@@ -104,7 +109,7 @@ public class MergeSort {
 
 		@Override
 		public void run() {
-			System.out.println("запущен поток " + nT); // ---
+			// System.out.println("запущен поток " + nT); // ---
 			sort(array, firstIdx, lastIndex);
 		}
 
@@ -117,24 +122,24 @@ public class MergeSort {
 			MergeSort.sort(array, firstIdx, leftLastIdx);
 			MergeSort.sort(array, rightFirstIdx, lastIndex);
 
-			print(array, firstIdx, leftLastIdx);
-			print(array, rightFirstIdx, lastIndex);
+			// print(array, firstIdx, leftLastIdx);
+			// print(array, rightFirstIdx, lastIndex);
 
 			MergeSort.merge(array, firstIdx, leftLastIdx, rightFirstIdx,
 					lastIndex);
 
-			System.out.println("after merge");
-			print(array, firstIdx, lastIndex);
+			// System.out.println("after merge");
+			// print(array, firstIdx, lastIndex);
 			// System.arraycopy(array, 0, left, 0, middle);
 			// System.arraycopy(array, middle, right, 0, rest);
 
 		}
 
-		void print(int[] array, int firstIdx, int lastIndex) {
-			System.out.println("==============================");
-			for (int i = firstIdx; i < lastIndex + 1; i++) {
-				System.out.println(array[i]);
-			}
-		}
+		// void print(int[] array, int firstIdx, int lastIndex) {
+		// System.out.println("==============================");
+		// for (int i = firstIdx; i < lastIndex + 1; i++) {
+		// System.out.println(array[i]);
+		// }
+		// }
 	}
 }
