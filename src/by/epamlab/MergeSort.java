@@ -3,10 +3,7 @@ package by.epamlab;
 import java.util.Arrays;
 
 public class MergeSort {
-	// private int[] sorted;
-
 	private MergeSort() {
-
 	}
 
 	public static void sort(int[] array) {
@@ -18,27 +15,19 @@ public class MergeSort {
 		case 1:
 			break;
 		case 2:
-			// synchronized (array) {
 			if (array[firstIdx] > array[lastIndex]) {
 				int temp = array[firstIdx];
 				array[firstIdx] = array[lastIndex];
 				array[lastIndex] = temp;
-				// }
 			}
-
-			// swap(array, firstIdx, lastIndex);
 			break;
 		default:
 			new Branch(array, firstIdx, lastIndex);
 		}
-		// if (array.length > 1) {
-		// new Branch(array);
-		// }
 	}
 
 	private static void merge(int[] array, int leftFirstIdx, int leftLastIndex,
 			int rightFirstIdx, int rightLastIndex) {
-		System.out.println(Thread.currentThread().getName());
 		int[] temp = Arrays.copyOfRange(array, leftFirstIdx, leftLastIndex + 1);
 		int tempCursor = 0;
 		int rightCursor = rightFirstIdx;
@@ -66,7 +55,7 @@ public class MergeSort {
 
 	// ==============nested class================
 	static class Branch implements Runnable {
-		private static final int MAX_THREADS = 3;// ///////////////
+		private static final int MAX_THREADS = 10;
 		private static int threadStarted = 0;
 
 		private Thread thread;
@@ -99,7 +88,7 @@ public class MergeSort {
 			sort(array, firstIdx, lastIndex);
 		}
 
-		private void sort(int[] array, int firstIdx, int lastIndex) {			
+		private void sort(int[] array, int firstIdx, int lastIndex) {
 			int totalSize = lastIndex - firstIdx + 1;
 			int middle = totalSize / 2;
 			int leftLastIdx = firstIdx + middle - 1;
@@ -108,24 +97,8 @@ public class MergeSort {
 			MergeSort.sort(array, firstIdx, leftLastIdx);
 			MergeSort.sort(array, rightFirstIdx, lastIndex);
 
-			// print(array, firstIdx, leftLastIdx);
-			// print(array, rightFirstIdx, lastIndex);
-
 			MergeSort.merge(array, firstIdx, leftLastIdx, rightFirstIdx,
 					lastIndex);
-
-			// System.out.println("after merge");
-			// print(array, firstIdx, lastIndex);
-			// System.arraycopy(array, 0, left, 0, middle);
-			// System.arraycopy(array, middle, right, 0, rest);
-
 		}
-
-		// void print(int[] array, int firstIdx, int lastIndex) {
-		// System.out.println("==============================");
-		// for (int i = firstIdx; i < lastIndex + 1; i++) {
-		// System.out.println(array[i]);
-		// }
-		// }
 	}
 }
