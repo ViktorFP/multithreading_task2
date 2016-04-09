@@ -19,10 +19,15 @@ public class Runner {
 				+ "ms");
 
 		// parallel sorting
-		array=null;
+		array = null;
 		array = IntegerGenerator.generateArrayData(ARRAY_SIZE, ARRAY_MAX_RANGE);
+
 		time = (new Date()).getTime();
-		MergeSort.sort(array);
+		try {
+			MergeSort.sort(array);
+		} catch (InterruptedException e) {
+			System.out.println("Sorting was interrupted: " + e.getMessage());
+		}
 		System.out.println("MergeSort.sort: " + ((new Date()).getTime() - time)
 				+ "ms");
 	}
