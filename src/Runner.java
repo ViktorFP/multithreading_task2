@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Date;
 
 import by.epamlab.IntegerGenerator;
@@ -12,17 +11,7 @@ public class Runner {
 		int[] array = IntegerGenerator.generateArrayData(ARRAY_SIZE,
 				ARRAY_MAX_RANGE);
 
-		// simpl sorting
 		long time = (new Date()).getTime();
-		Arrays.sort(array);
-		System.out.println("Arrays.sort: " + ((new Date()).getTime() - time)
-				+ "ms");
-
-		// parallel sorting
-		array = null;
-		array = IntegerGenerator.generateArrayData(ARRAY_SIZE, ARRAY_MAX_RANGE);
-
-		time = (new Date()).getTime();
 		try {
 			MergeSort.sort(array);
 		} catch (InterruptedException e) {
