@@ -1,5 +1,3 @@
-import java.util.Date;
-
 import by.epamlab.IntegerGenerator;
 import by.epamlab.MergeSort;
 
@@ -11,13 +9,13 @@ public class Runner {
 		int[] array = IntegerGenerator.generateArrayData(ARRAY_SIZE,
 				ARRAY_MAX_RANGE);
 
-		long time = (new Date()).getTime();
+		long time = System.currentTimeMillis();
 		try {
 			MergeSort.sort(array);
 		} catch (InterruptedException e) {
 			System.out.println("Sorting was interrupted: " + e.getMessage());
 		}
-		System.out.println("MergeSort.sort: " + ((new Date()).getTime() - time)
-				+ "ms");
+		System.out.println("MergeSort.sort: "
+				+ (System.currentTimeMillis() - time) + "ms");
 	}
 }
